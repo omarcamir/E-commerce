@@ -12,7 +12,7 @@ const ProductCard = ({ id, title, priceAfterDiscount, category, price, rate, img
   async function addProductToCart(id){
     let res = await addToCart(id)
     console.log(res)
-    if(res.status ==='success'){
+    if(res?.status ==='success'){
       toast.success('Added to cart')
     }
     else{
