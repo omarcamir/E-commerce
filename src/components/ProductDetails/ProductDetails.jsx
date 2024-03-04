@@ -36,13 +36,21 @@ const ProductDetails = () => {
     pauseOnHover: true,
   };
   async function addProductToCart(id){
-    let res = await addToCart(id)
-    console.log(res)
-    if(res.response.status === 200){
-      toast.success('Added to cart')
+    if (!id) {
+      console.error('Invalid ProductId:', id);
+      return;
     }
-    else{
-      toast.error('Something went wrong')
+    try {
+      let res = await addToCart(id);
+      console.log(res);
+      if (res?.status === 'success') {
+        toast.success('Added to cart');
+      } else {
+        toast.error('Something went wrong');
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      toast.error('Failed to add to cart');
     }
   }
   return (
@@ -62,8 +70,9 @@ const ProductDetails = () => {
         <Row className="my-5">
           <Col md={3} className="mb-3">
             <Slider {...settings}>
-              {data.images.map((img)=>
+              {data.images.map((img,index)=>
               <img
+              key={index}
               src={img}
               className="w-100 rounded-5 mb-3 rounded d-block"
               alt={data.title}

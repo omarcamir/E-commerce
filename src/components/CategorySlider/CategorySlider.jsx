@@ -88,11 +88,11 @@ const CategorySlider = () => {
                 <Card.Body>
                   <Link
                     to={`/categories/${category._id}`}
-                    className="text-decoration-none linkdark"
+                    className="text-decoration-none link-dark"
                   >
                     <Card.Title
                       className={`text-muted ${
-                        category.name.length > 10 ? "fs-6" : "fs-7"
+                        category.name.length > 10 ? "fs-6" : "fs-5"
                       }`}
                     >
                       {category.name}

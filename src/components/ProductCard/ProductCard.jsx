@@ -10,14 +10,29 @@ import { toast } from "react-toastify";
 const ProductCard = ({ id, title, priceAfterDiscount, category, price, rate, img }) => {
   const {addToCart} = useCartContext()
   async function addProductToCart(id){
-    let res = await addToCart(id)
-    console.log(res)
-    if(res?.status ==='success'){
-      toast.success('Added to cart')
+    if (!id) {
+      console.error('Invalid ProductId:', id);
+      return;
     }
-    else{
-      toast.error('Something went wrong')
+    try {
+      let res = await addToCart(id);
+      console.log(res);
+      if (res?.status === 'success') {
+        toast.success('Added to cart');
+      } else {
+        toast.error('Something went wrong');
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      toast.error('Failed to add to cart');
     }
+    if (!id) {
+      console.error('Invalid ProductId:', id);
+      return;
+    }
+    
+
+
   }
   return (
     <Col sm={6} md={4} lg={3} className="mb-4">

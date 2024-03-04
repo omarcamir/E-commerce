@@ -7,12 +7,12 @@ const CartContext = createContext();
 function CartContextProvider({ children }) {
   const endPoint = "https://ecommerce.routemisr.com/api/v1/cart/ ";
   const { userToken } = useAuth();
-  async function addToCart(ProductId) {
+  async function addToCart(productId) {
     try {
       const { data } = await axios.post(
         endPoint,
         {
-          ProductId: ProductId,
+          productId: productId,
         },
         {
           headers: {
