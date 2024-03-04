@@ -1,33 +1,31 @@
 import React from 'react'
-import { Container, Nav, Navbar } from 'react-bootstrap'
+import { Badge, Container, Nav, Navbar } from 'react-bootstrap'
 import { Link, NavLink } from 'react-router-dom'
-import styles from './NavBar.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { useAuth } from '../../context/AuthContext'
+import { useCartContext } from '../../context/CartContext'
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 
 const NavBar = () => {
   const {userToken , setUserToken} = useAuth()
+  const {numOfCartItems} = useCartContext()
     const pages = [
         {
             path:"",
             name:"Home"
         },
         {
-            path:"cart",
-            name:"Cart"
-        },
-        {
-            path:"products",
-            name:"Products"
+          path:"products",
+          name:"Products"
         },
         {
           path:"brands",
           name:"Brands"
         },
         {
-            path:"categories",
-            name:"Categories"
+          path:"categories",
+          name:"Categories"
         },
     ]
     const socialMedia = [
@@ -44,12 +42,13 @@ const NavBar = () => {
         link:"https://www.linkdin.com/in/omarcamir",
       },
     ]
+    
     const handleLogout = ()=>{
       setUserToken(null)
       localStorage.removeItem("userToken")
     }
   return (
-    <Navbar expand="lg" className="bg-dark navbar-dark">
+    <Navbar sticky='top' expand="lg" className="bg-dark navbar-dark">
       <Container>
         <Link className='text-decoration-none' to='/'>
             <Navbar.Brand className='fw-bold'>E-commerce</Navbar.Brand>
@@ -59,7 +58,7 @@ const NavBar = () => {
           <Nav className="ms-auto">
             {userToken &&
             pages.map((page , index)=>(
-              <NavLink className='nav-link' key={index} to={page.path}>{page.name}</NavLink>
+              <NavLink className='nav-link ' key={index} to={page.path}>{page.name}</NavLink>
           ))
             }
           </Nav>
@@ -71,8 +70,9 @@ const NavBar = () => {
             ))}
             {userToken ?
               <>
-                <NavLink className='nav-link'>
-                  Profile
+                <NavLink className='nav-link position-relative' to='/cart'>
+                  <FontAwesomeIcon icon={faCartShopping} />
+                  <Badge bg="danger" className='d-flex justify-content-center align-items-center rounded-circle position-absolute w-50 h-50 top-0 start-50'>{numOfCartItems}</Badge>
                 </NavLink>
                 <NavLink className='nav-link' onClick={handleLogout}>
                   Logout

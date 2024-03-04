@@ -1,12 +1,16 @@
 import axios from "axios";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
-
 function CartContextProvider({ children }) {
-  const endPoint = "https://ecommerce.routemisr.com/api/v1/cart/ ";
+  const [numOfCartItems, setNumOfCartItems] = useState(0);
+  const endPoint = "https://ecommerce.routemisr.com/api/v1/cart/";
   const { userToken } = useAuth();
+  const headers = {
+    token: userToken,
+  };
+
   async function addToCart(productId) {
     try {
       const { data } = await axios.post(
@@ -15,19 +19,52 @@ function CartContextProvider({ children }) {
           productId: productId,
         },
         {
-          headers: {
-            token: userToken,
-          },
+          headers,
         }
       );
       console.log(data);
+      setNumOfCartItems(data.numOfCartItems);
       return data;
     } catch (error) {
       console.log(error);
     }
   }
+
+  async function getCartItems() {
+    try {
+      const { data } = await axios.get(endPoint, { headers });
+      setNumOfCartItems(data.numOfCartItems);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async function removeFromCart(cartItemId) {
+    try {
+      const { data } = await axios.delete(`${endPoint}/${cartItemId}`, {
+        headers,
+      });
+      setNumOfCartItems(data.numOfCartItems);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function updateProductQty(cartItemId, count) {
+    try {
+      
+    } catch (error) {
+      
+    }  const {data} = await axios.put(`${endPoint}/${cartItemId}`,{
+        count
+      }, {
+        headers
+      })
+      return data;
+  }
   return (
-    <CartContext.Provider value={{ addToCart }}>
+    <CartContext.Provider value={{ numOfCartItems, addToCart, getCartItems ,removeFromCart , updateProductQty }}>
       {children}
     </CartContext.Provider>
   );

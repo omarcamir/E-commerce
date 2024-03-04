@@ -16,7 +16,6 @@ const ProductCard = ({ id, title, priceAfterDiscount, category, price, rate, img
     }
     try {
       let res = await addToCart(id);
-      console.log(res);
       if (res?.status === 'success') {
         toast.success('Added to cart');
       } else {
