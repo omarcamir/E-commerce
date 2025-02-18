@@ -20,7 +20,7 @@ const RegisterForm = () => {
     name: Yup.string().required("Name is required"),
     email: Yup.string().email().required("Email is required"),
     phone: Yup.string()
-      .matches(/^(?:\+201|00201)?[0125][0-9]{8}$/, "Invalid Phone Number")
+      .matches(/^(?:\+201|00201|01)?[0125][0-9]{9}$/, "Invalid Phone Number")
       .required("Phone number is required"),
     password: Yup.string()
       .matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/i, "Invalid Password")
